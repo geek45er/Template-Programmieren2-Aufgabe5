@@ -11,10 +11,13 @@ Nun, da unsere Interfaces etwas komplexer werden, wird es Zeit, den Code etwas s
 Zunächst lösen wir die Berechnungslogik aus der Hauptklasse heraus, damit GUI und CLI auf die gleiche Art die Analyse durchführen können: Erstellen Sie eine neue Klasse ```SequenceAnalysisManager``` in ```org.htw.prog2.aufgabe1.analysis``` mit der Methode ```public static SequenceAnalysis performAnalysis(String referenceFileName, String patientSequenceFileName, String mutationFileName) throws Exception```: Führt die Analyse durch (also das, was bisher nach dem Parsen der Kommandozeilenargumente in ```HIVDiagnostics.main()``` passiert ist) und gibt die resultierende ```SequenceAnalysis``` zurück. Wirft eventuell dabei auftretende Exceptions (```throws NoValidReadersException, FileFormatException, IOException``` - nicht einfach nur ```throws Exception```, damit das aufrufende UI weiß, was alles behandelt werden muss) weiter. Gibt aber selber nichts auf der Kommandozeile aus! Das ist jetzt Aufgabe der aufrufenden UIs!
 
 Um einen sauberen Zugriff auf die für die Analyse verwendeten Daten über das von ```SequenceAnalysisManager``` zurückgegebene ```SequenceAnalysis```-Objekt zu ermöglichen, implementieren Sie zusätzlich in ```SequenceAnalysis``` die folgenden drei getter:
-    * ```public SequenceFile getSequences()```
-    * ```public MutationFile getMutations()```
-    * ```public String getReference()```
-    * ```public double getBestDrugResistance()```: Gibt zu dem Medikamentennamen, das von ```getBestDrug()``` zurückgegeben wird, die vorhergesagte Resistenz zurück
+
+* ```public SequenceFile getSequences()```
+* ```public MutationFile getMutations()```
+* ```public String getReference()```
+* ```public double getBestDrugResistance()```: Gibt zu dem Medikamentennamen, das von ```getBestDrug()``` 
+
+zurückgegeben wird, die vorhergesagte Resistenz zurück
 
 ### Dedizierte UI-Klassen für CLI und GUI
 
@@ -54,6 +57,7 @@ Nach erfolgter Refaktorisierung kann das GUI nun um Interaktionsmöglichkeiten e
 ### Menü
 
 Die beiden Menüeinträge brauchen `ActionListener`:
+
 * Für "About": `JOptionPane` mit kurzem Text anzeigen (siehe z. B. Beispiel-Screenshots am Ende)
 * Für "Exit": Programm beenden (`System.exit()`)
 
@@ -70,6 +74,7 @@ Die Interaktion mit den Lade-Buttons soll aus User-Sicht wie folgt aussehen:
         * Falls alle Dateien geladen wurden, wird der Auswerte-Button aktiviert
 
 Hier ist wieder einiges an gemeinsamer Funktionalität in allen nötigen `ActionListener` gemeinsam. Erstellen Sie entsprechend mehrere Klassen:
+
 * Eine interne abstrakte Klasse `LoadListener`, die `ActionListener` implementiert und:
     * Im Constructor ein String-Array mit zugelassenen Dateiendungen (z.B. "fasta", "fastq") sowie einen String mit der Beschreibung des Dateityps (z.B. "Sequenzdateien im FASTA- oder FASTQ-Format") für den JFileChooser übergeben bekommt
     * Eine abstrakte Methode `setData(File loaded)` besitzt (die in der konkreten Implementation den Text des korrekten Labels setzt und den Dateipfad in dem korrekten Attribut speichert)
@@ -84,12 +89,13 @@ Hier ist wieder einiges an gemeinsamer Funktionalität in allen nötigen `Action
 ### "Predict best drug"-Button
 
 Implementieren Sie abschließend für den Button "Predict best drug" ebenfalls einen anonymen `ActionListener`, der 
-    * Mittels `SequenceAnalysisManager.performAnalysis()` die Berechnungen durchführt.
-    * Falls eine Exception fliegt, ein `JOptionPane` mit `e.getMessage()` als Fehlertext und passendem Titel anzeigt:
-        * `IOException` -> `Error loading file`
-        * `NoValidReadersException` -> `Unsupported file format`
-        * `FileFormatException` -> `Error parsing file`
-    * Die Ergebnisse (SequenceAnalysis.getBestDrug()`, `SequenceAnalysis.getBestDrugResistance()`) in zwei neuen `JLabel` anzeigt (siehe Screenshots, neue Labels unter dem Berechnungs-Button).
+
+* Mittels `SequenceAnalysisManager.performAnalysis()` die Berechnungen durchführt.
+* Falls eine Exception fliegt, ein `JOptionPane` mit `e.getMessage()` als Fehlertext und passendem Titel anzeigt:
+  * `IOException` -> `Error loading file`
+  * `NoValidReadersException` -> `Unsupported file format`
+  * `FileFormatException` -> `Error parsing file`
+* Die Ergebnisse (SequenceAnalysis.getBestDrug()`, `SequenceAnalysis.getBestDrugResistance()`) in zwei neuen `JLabel` anzeigt (siehe Screenshots, neue Labels unter dem Berechnungs-Button).
     
 #### Beispielbilder
 

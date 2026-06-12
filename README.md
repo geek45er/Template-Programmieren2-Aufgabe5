@@ -1,6 +1,6 @@
 # Aufgabe zu Woche 7
 
-In dieser Woche wird unser GUI interaktiv! Aber zunächst räumen wir ein wenig auf.
+In dieser Woche erweitern Sie das GUI um Interaktivität - damit ist das Programm vollständig. Aber zunächst räumen wir ein wenig auf.
 
 ## Refaktorisierung der UI-Klassen
 
@@ -53,9 +53,9 @@ Nach erfolgter Refaktorisierung kann das GUI nun um Interaktionsmöglichkeiten e
 
 ### Menü
 
-Dei beiden Menüeinträge brauchen ```ActionListener```:
-* Für "About": ```JOptionPane``` mit kurzem Text anzeigen (siehe z. B. Beispiel-Screenshots am Ende)
-* Für "Exit": Programm beenden
+Die beiden Menüeinträge brauchen `ActionListener`:
+* Für "About": `JOptionPane` mit kurzem Text anzeigen (siehe z. B. Beispiel-Screenshots am Ende)
+* Für "Exit": Programm beenden (`System.exit()`)
 
 ### Lade-Buttons
 
@@ -69,27 +69,27 @@ Die Interaktion mit den Lade-Buttons soll aus User-Sicht wie folgt aussehen:
         * Der Text des Labels wird schwarz
         * Falls alle Dateien geladen wurden, wird der Auswerte-Button aktiviert
 
-Hier ist wieder einiges an gemeinsamer Funktionalität in allen nötigen ```ActionListener``` gemeinsam. Erstellen Sie entsprechend mehrere Klassen:
-* Eine interne abstrakte Klasse ```LoadListener```, die ```ActionListener``` implementiert und:
+Hier ist wieder einiges an gemeinsamer Funktionalität in allen nötigen `ActionListener` gemeinsam. Erstellen Sie entsprechend mehrere Klassen:
+* Eine interne abstrakte Klasse `LoadListener`, die `ActionListener` implementiert und:
     * Im Constructor ein String-Array mit zugelassenen Dateiendungen (z.B. "fasta", "fastq") sowie einen String mit der Beschreibung des Dateityps (z.B. "Sequenzdateien im FASTA- oder FASTQ-Format") für den JFileChooser übergeben bekommt
-    * Eine abstrakte Methode ```setData(File loaded)``` besitzt (die in der konkreten Implementation den Text des korrekten Labels setzt und den Dateipfad in dem korrekten Attribut speichert)
-    * Die Methode ```actionPerformed``` aus ```ActionListener``` überschreibt und die oben beschriebenen gemeinsamen Aktionen durchführt:
-        * Einen entsprechenden ```JFileChooser``` anzeigen
-        * Falls eine Datei ausgewählt wurde, ```setData(File loaded)``` aufrufen
-        * Falls alle drei Dateien geladen wurden: Den Button "Predict best drug" aktiviert (über die Methode ```setActive(true)```).
-* Für jeden Button: Einen anonymen ```LoadListener```, der in ```setData(File loaded)```:
+    * Eine abstrakte Methode `setData(File loaded)` besitzt (die in der konkreten Implementation den Text des korrekten Labels setzt und den Dateipfad in dem korrekten Attribut speichert)
+    * Die Methode `actionPerformed` aus `ActionListener` überschreibt und die oben beschriebenen gemeinsamen Aktionen durchführt:
+        * Einen entsprechenden `JFileChooser` anzeigen
+        * Falls eine Datei ausgewählt wurde, `setData(File loaded)` aufrufen
+        * Falls alle drei Dateien geladen wurden: Den Button "Predict best drug" aktiviert (über die Methode `setActive(true)`).
+* Für jeden Button: Einen anonymen `LoadListener`, der in `setData(File loaded)`:
     * Den vollen Pfad der Datei speichert
-    * Das entsprechende Label auf den Dateinamen (```File.getName()```) setzt
+    * Das entsprechende Label auf den Dateinamen (`File.getName()`) setzt
     
 ### "Predict best drug"-Button
 
-Implementieren Sie abschließend für den Button "Predict best drug" ebenfalls einen anonymen ```ActionListener```, der 
-    * Mittels ```SequenceAnalysisManager.performAnalysis()``` die Berechnungen durchführt.
-    * Falls eine Exception fliegt, ein ```JOptionPane``` mit ```e.getMessage()``` als Fehlertext und passendem Titel anzeigt:
-        * ```IOException``` -> ```Error loading file```
-        * ```NoValidReadersException``` -> ```Unsupported file format```
-        * ```FileFormatException``` -> ```Error parsing file```
-    * Die Ergebnisse (```SequenceAnalysis.getBestDrug()```, ```SequenceAnalysis.getBestDrugResistance()```) in zwei neuen ```JLabel``` anzeigt (siehe Screenshots, neue Labels unter dem Berechnungs-Button).
+Implementieren Sie abschließend für den Button "Predict best drug" ebenfalls einen anonymen `ActionListener`, der 
+    * Mittels `SequenceAnalysisManager.performAnalysis()` die Berechnungen durchführt.
+    * Falls eine Exception fliegt, ein `JOptionPane` mit `e.getMessage()` als Fehlertext und passendem Titel anzeigt:
+        * `IOException` -> `Error loading file`
+        * `NoValidReadersException` -> `Unsupported file format`
+        * `FileFormatException` -> `Error parsing file`
+    * Die Ergebnisse (SequenceAnalysis.getBestDrug()`, `SequenceAnalysis.getBestDrugResistance()`) in zwei neuen `JLabel` anzeigt (siehe Screenshots, neue Labels unter dem Berechnungs-Button).
     
 #### Beispielbilder
 
@@ -108,10 +108,3 @@ Implementieren Sie abschließend für den Button "Predict best drug" ebenfalls e
 ##### Berechnungsergebnis
 
 ![Ergebnis](Bilder/Aufgabe5_beispielscreenshot3.png)
-
-
-# Ergebnisscreenshots
-
-Da wie beschrieben GUI-Tests in diesem Fall nicht möglich sind, erstellen Sie bitte wie bei der letzten Aufgabe einen Screenshot von Ihrem Programmfenster nach Durchführung der Berechnungen (also so wie der letzte Beispielscreenshot, unter "Berechnungsergebnis") und ersetzen Sie die Datei "Bilder/Aufgabe5_screenshot.png" durch Ihren Screenshot. Er müsste dann hier erscheinen:
-
-![Ihr Ergebnis](Bilder/Aufgabe5_screenshot.png)

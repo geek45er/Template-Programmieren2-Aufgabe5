@@ -11,7 +11,7 @@ tasks.withType(JavaCompile) {
 }
 
 run {
-//    args '-m data/HIVMutationPatternsPI.csv -d ProteaseInhibitor -r data/protease_reference.fasta -p data/protease_sequences.fasta'.split(" ")
+    // args '-m data/HIVMutationPatternsPI.csv -d ProteaseInhibitor -r data/protease_reference.fasta -p data/protease_sequences.fasta'.split(" ")
 }
 
 test{

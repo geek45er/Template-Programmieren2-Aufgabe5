@@ -3,4 +3,11 @@
 /build/
 /build/classes/java/main/
 /build/classes/java/test/
-/out/
+/out/.DS_Store
+.idea/
+*.iml
+.gradle/
+build/
+bin/
+out/
+*.class
